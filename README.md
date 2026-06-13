@@ -6,6 +6,12 @@
 
 ---
 
+## Demo
+
+🎥 **[Watch the mobile Hand AI test →](./mobile_test.mov)** — a screen recording of the **HealthChecker** iOS app screening for *asterixis* (liver flap) to catch early hepatic encephalopathy. See [`mobile/`](./mobile) for the app and setup instructions.
+
+---
+
 ## The Problem
 
 Liver disease is a silent killer. Patients deteriorate between appointments, labs go unreviewed, and caregivers are left disconnected from the clinical picture — until it's too late. Avoidable hospitalizations, delayed diagnosis, and fragmented communication are the norm.
