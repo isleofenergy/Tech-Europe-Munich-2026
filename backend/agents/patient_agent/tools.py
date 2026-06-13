@@ -49,7 +49,7 @@ def _notify_caregiver(alert_type: str, severity: str, message: str) -> None:
             "alert_type": alert_type,
             "severity": severity,
             "message": message,
-            "source": "patient_checkin_agent",
+            "source": "patient_agent_agent",
             "timestamp": _now(),
             "acknowledged": False,
         })

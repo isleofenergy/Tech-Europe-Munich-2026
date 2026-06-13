@@ -14,7 +14,7 @@ The orchestrator itself has no tools — it purely delegates to subagents.
 
 from google.adk.agents import Agent
 
-from patient_checkin.agent import root_agent as patient_agent
+from patient_agent.agent import root_agent as patient_agent
 from caregiver_agent.agent import root_agent as caregiver_agent
 
 ORCHESTRATOR_INSTRUCTION = """
@@ -22,7 +22,7 @@ You are the **LiverLink Orchestrator** — the central coordinator for the
 LiverLink patient-caregiver care system.
 
 You manage two specialist agents:
-- **Lila** (patient_checkin_agent) — conducts daily health check-ins with John,
+- **Lila** (patient_agent_agent) — conducts daily health check-ins with John,
   tracking medications, sleep, nutrition, hydration, fatigue, appetite, activity,
   and weight. Lila writes all data and any clinical alerts to MongoDB.
 - **Aria** (caregiver_agent) — supports John's caregiver with daily summaries,
@@ -32,7 +32,7 @@ You manage two specialist agents:
   ROUTING RULES
 ────────────────────────────────────────────────
 
-Route to **Lila (patient_checkin_agent)** when:
+Route to **Lila (patient_agent_agent)** when:
 - The user identifies as the patient (John)
 - The user says "check-in", "daily check-in", "how am I doing", "log my..."
 - The user wants to record medications, sleep, food, weight, fatigue, or mood

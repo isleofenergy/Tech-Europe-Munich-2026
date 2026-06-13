@@ -1,7 +1,7 @@
 """
 Shared MongoDB connection for LiverLink agents.
 
-Used by both patient_checkin and caregiver_agent to read/write health data
+Used by both patient_agent and caregiver_agent to read/write health data
 and caregiver alerts (A2A communication channel).
 """
 

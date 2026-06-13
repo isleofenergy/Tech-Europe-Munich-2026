@@ -12,8 +12,8 @@ from google.adk.agents import Agent
 from google.adk.agents.callback_context import CallbackContext
 from google.genai import types
 
-from patient_checkin.prompts import PATIENT_AGENT_INSTRUCTION
-from patient_checkin.tools import (
+from patient_agent.prompts import PATIENT_AGENT_INSTRUCTION
+from patient_agent.tools import (
     log_medication_status,
     log_sleep_quality,
     log_protein_intake,
@@ -64,7 +64,7 @@ def opening_greeting(callback_context: CallbackContext) -> Optional[types.Conten
 
 
 root_agent = Agent(
-    name="patient_checkin_agent",
+    name="patient_agent_agent",
     model="gemini-2.5-flash",
     description=(
         "Lila — LiverLink's compassionate daily health companion for patients "
