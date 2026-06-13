@@ -15,6 +15,7 @@ from doctor_agent.tools import (
     calculate_child_pugh,
     get_hepatology_clinical_pathway,
     get_patient_comprehensive_profile,
+    notify_doctor_and_prep_emergency_admission,
 )
 
 root_agent = Agent(
@@ -33,5 +34,6 @@ root_agent = Agent(
         get_hepatology_clinical_pathway,
         search_web,
         get_patient_comprehensive_profile,
+        notify_doctor_and_prep_emergency_admission,
     ],
 )

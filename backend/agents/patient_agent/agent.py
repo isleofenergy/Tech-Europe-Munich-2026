@@ -39,10 +39,31 @@ def opening_greeting(callback_context: CallbackContext) -> Optional[types.Conten
     else:
         time_greeting = "Good evening"
 
+    # Dynamic greeting check for active emergency / critical alerts
+    try:
+        from shared.db import get_db, PATIENT_ID
+        db = get_db()
+        urgent_alert = db.caregiver_alerts.find_one({
+            "patient_id": PATIENT_ID,
+            "severity": "urgent",
+            "acknowledged": False
+        })
+        if urgent_alert:
+            return types.Content(
+                role="model",
+                parts=[types.Part(text=(
+                    "🚨 **LIVERLINK URGENT CHECK-IN** 🚨\n\n"
+                    "John, our system has flagged a critical symptom alert from your profile.\n"
+                    "We need to run the Hand AI Ammonia check-in right now to check for motor tremors and asterixis."
+                ))],
+            )
+    except Exception as db_err:
+        print(f"[Lila Emergency Greeting Check Error] {db_err}")
+
     return types.Content(
         role="model",
         parts=[types.Part(text=(
-            f"{time_greeting}! I'm **Lila**, your daily liver health companion.\n\n"
+            f"{time_greeting}! I'm Lila, your daily liver health companion.\n\n"
             "I've reviewed all your HealthDevice data and checked your vitals, and everything is looking excellent and right on track!\n\n"
             "How are you feeling today?"
         ))],

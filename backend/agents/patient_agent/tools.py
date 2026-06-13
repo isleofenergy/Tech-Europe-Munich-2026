@@ -186,8 +186,24 @@ def run_hand_ai_ammonia_test() -> dict:
     except Exception as db_err:
         print(f"[HAND AI APP DB ERROR] {db_err}")
 
-    # 2. Simulate dispatching the alert to Telegram API
-    print(f"[TELEGRAM API DISPATCH] Simulated Telegram alert: Patient John Doe completed Hand AI scan. Encephalopathy flap detected! Sending alert... (Telegram API pending full integration)")
+    # 2. Dispatch the alert to the actual Telegram API
+    import requests
+    try:
+        tg_url = "http://localhost:8001/send"
+        payload = {
+            "patient_id": PATIENT_ID,
+            "text": "🚨 URGENT: John, please complete your Hand AI ocular and micro-tremor scan immediately in the LiverLink app.",
+            "from_agent": "patient_agent_agent",
+            "open_app": True,
+            "deeplink_path": "handtest?patient=patient_john_doe"
+        }
+        res = requests.post(tg_url, json=payload, timeout=2)
+        if res.status_code == 200:
+            print("[A2A Telegram API] Successfully dispatched urgent message to John's Telegram!")
+        else:
+            print(f"[A2A Telegram API] Failed to send message (status code {res.status_code})")
+    except Exception as e:
+        print(f"[A2A Telegram API Offline / Falling back] {e}")
 
     # 3. Write standard backward-compatible logs in health_logs
     _write_health_log("ammonia_level", {

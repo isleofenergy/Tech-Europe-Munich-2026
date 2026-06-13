@@ -67,7 +67,7 @@ cleanup() {
     
     exit 0
 }
-trap cleanup SIGINT SIGTERM EXIT
+trap cleanup SIGINT SIGTERM
 
 # Step 1: Start the Google ADK Agent Server
 echo -e "${GREEN}[1/2] Starting Google ADK Agent Server on Port 8000...${NC}"
