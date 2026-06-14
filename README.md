@@ -6,6 +6,12 @@ By linking real-time web dashboards with specialized AI agents (powered by Googl
 
 ---
 
+## Demo
+
+🎥 **[Watch the mobile Hand AI test →](./mobile_test.mov)** — a screen recording of the **HealthChecker** iOS app screening for *asterixis* (liver flap) to catch early hepatic encephalopathy. See [`mobile/`](./mobile) for the app and setup instructions.
+
+---
+
 ## 🏗️ Architecture Overview
 
 The platform operates on a **Unified Origin Architecture** utilizing two primary servers:
@@ -33,6 +39,20 @@ The platform operates on a **Unified Origin Architecture** utilizing two primary
 
 1. **Google ADK Agent Server** (Port `8000`): Runs the four specialized AI agents (Lila, Aria, Lab Agent, Hepatology Specialist Agent) and their custom tool registries.
 2. **LiverLink Proxy/Web Server** (Port `8080`): Serves the unified frontend resources and proxies conversational/vision pipelines to the ADK agent endpoints (avoiding CORS and origin mismatches).
+
+---
+
+## 🤖 AI Models
+
+LiverLink runs entirely on **Google models**, across two complementary tiers:
+
+| Surface | Model | Runs | Role |
+|---|---|---|---|
+| **Web platform agents** — Lila, Aria, Lab Agent, Hepatology Specialist | **Google Gemini 2.5** (via [Google ADK](https://google.github.io/adk-docs/)) | ☁️ Cloud (`GOOGLE_API_KEY`) | Conversation, lab-report vision, clinical reasoning & orchestration |
+| **HealthChecker mobile app** ([`mobile/`](./mobile)) | **Google Gemma** — E2B instruction-tuned, 4-bit vision (`VLMRegistry.gemma4_E2B_it_4bit`) | 📱 On-device, Apple [MLX](https://github.com/ml-explore/mlx-swift-lm) | Asterixis (liver-flap) screening from a short hand video |
+
+- The **mobile** Gemma model (~2 GB) downloads once from Hugging Face and is cached in the app container — **all inference runs on-device; no frames or video ever leave the phone.** Heavier variants (`gemma4_E4B_it_4bit`, `gemma3_4B_qat_4bit`) can be swapped in for higher quality.
+- The **web platform** calls cloud **Gemini 2.5** through the ADK server for the four specialized agents and the lab-scanner vision pipeline.
 
 ---
 
@@ -123,5 +143,10 @@ Tech-Europe-Munich-2026/
 │       ├── lab_agent/              # Biochemical extractor
 │       ├── doctor_agent/           # Hepatology clinical consultant
 │       └── shared/                 # MongoDB database adapter
+├── mobile/                         # HealthChecker iOS app — on-device Gemma vision
+│   ├── Sources/                    #   SwiftUI views + GemmaVLMService (Apple MLX)
+│   ├── backend/                    #   Vercel functions to persist results
+│   └── project.yml                 #   XcodeGen config (run `xcodegen generate`)
+└── mobile_test.mov                 # 🎥 Mobile Hand AI test demo recording
 ```
 
