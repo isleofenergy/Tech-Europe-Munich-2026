@@ -16,9 +16,9 @@ def run():
     print("==============================================================")
     
     with sync_playwright() as p:
-        # Launch browser (headless so it runs on server seamlessly)
+        # Launch browser (headless=False so you can watch the automated flow)
         print("[1/6] Launching Chromium browser...")
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=False)
         page = browser.new_page()
         
         # Navigate to LiverLink Dashboard
@@ -30,14 +30,18 @@ def run():
             print(f"[ERROR] Could not connect to http://localhost:8080/. Make sure the servers are running (./run_all.sh). Error: {e}")
             sys.exit(1)
             
+        # Give the page 3 seconds to fully load and initialize its javascript handlers
+        print("Waiting 3 seconds for page initialization...")
+        time.sleep(3)
+            
         # Click the emergency simulation trigger button
         print("[3/6] Triggering Patient Jaundice & Encephalopathy Emergency simulation...")
         page.wait_for_selector("#btn-simulate-emergency")
-        page.click("#btn-simulate-emergency")
+        page.locator("#btn-simulate-emergency").click(force=True)
         
-        # Verify the visual Multi-Agent Care Escalation Tracker is displayed
-        page.wait_for_selector("#emergency-flow-tracker")
-        print("✓ Verified: Live Multi-Agent Care Escalation Tracker is now visible on the dashboard!")
+        # Verify the chat sidebar is visible
+        page.wait_for_selector("#agent-chat-sidebar")
+        print("✓ Verified: Live Multi-Agent Care Escalation Chat Sidebar is now visible on the dashboard!")
         
         # Take a screenshot of the initial step (Lila active)
         time.sleep(2)

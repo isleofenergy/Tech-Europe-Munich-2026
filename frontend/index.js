@@ -1355,6 +1355,7 @@ async function sendAgentChatMessage(event) {
   
   const inputEl = document.getElementById('chat-user-input');
   const userText = inputEl.value.trim();
+  console.log("[CHAT] sendAgentChatMessage called with text:", userText);
   if (!userText) return;
   
   // Disable form input during call
@@ -2234,6 +2235,7 @@ async function openAgentDashboard(agentKey) {
 //  Simulate Patient Log Emergency (Orchestration Flow Trigger)
 // ──────────────────────────────────────────────────────────────────────────────
 async function toggleSimulatedEmergency() {
+  console.log("[SIMULATION] toggleSimulatedEmergency started");
   const btn = document.getElementById('btn-simulate-emergency');
   showToast("Simulating Emergency", "Flagging jaundice & severe symptoms to MongoDB logs...", true);
   
@@ -2271,11 +2273,8 @@ async function toggleSimulatedEmergency() {
     const inputEl = document.getElementById('chat-user-input');
     if (inputEl) {
       inputEl.value = "Orchestrator: John's MongoDB logs have flagged an urgent jaundice & encephalopathy risk alert! Can you coordinate with Aria (caregiver) and recommend clinical steps for Dr. Elizabeth Vance?";
-      // Auto-submit the emergency query to the Orchestrator
-      const form = document.querySelector('.chat-input-area');
-      if (form) {
-        form.dispatchEvent(new Event('submit'));
-      }
+      // Directly call sendAgentChatMessage to submit the query reliably and instantly
+      sendAgentChatMessage(null);
     }
   }, 1200);
 }
